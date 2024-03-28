@@ -49,6 +49,24 @@ const resolvers = {
     deleteGame(_, args) {
       return db.games.filter((game) => args.id !== game.id);
     },
+    addGame(_, args) {
+      let game = {
+        ...args.game,
+        id: Math.floor(Math.random() * 100000).toString(),
+      };
+      db.games.push(game);
+      return game;
+    },
+    updateGame(_, args) {
+      db.games = db.games.map((g) => {
+        if (g.id === args.id) {
+          return { ...g, ...args.edits };
+        }
+        return g;
+      });
+
+      return db.games.find((g) => g.id === args.id);
+    },
   },
 };
 
